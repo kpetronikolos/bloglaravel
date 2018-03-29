@@ -12,10 +12,11 @@
     <title>Admin</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{asset('css/blog-posts.css')}}" rel="stylesheet">
+    
 
     <link href="{{asset('css/bootstrap.css')}}" rel="stylesheet">
     <link href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/blog-post.css')}}" rel="stylesheet">
     <link href="{{asset('css/font-awesome.css')}}" rel="stylesheet">
     <link href="{{asset('css/metisMenu.css')}}" rel="stylesheet">
     <link href="{{asset('css/sb-admin-2.css')}}" rel="stylesheet">
