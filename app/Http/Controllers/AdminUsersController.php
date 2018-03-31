@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Photo;
 use App\Http\Requests\UsersRequest;
+use App\Http\Requests\UsersEditRequest;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
@@ -64,6 +65,8 @@ class AdminUsersController extends Controller
         User::create($input);
 
         return redirect('/admin/users');
+
+        // return $request->photo_id->getClientOriginalName();
         //return $request->all();
     }
 
@@ -101,9 +104,30 @@ class AdminUsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersEditRequest $request, $id)
     {
         //
+        //return $request->all();
+        $user = User::findOrFail($id);
+
+        $input = $request->all();
+
+        if ($file = $request->file('photo_id')) {
+            $name = time() . $file->getClientOriginalName();
+
+            $file->move('images', $name);
+
+            $photo = Photo::create(['file'=>$name]);
+
+            $input['photo_id'] = $photo->id;
+        }
+
+        $input['password'] = bcrypt($request->password);
+
+        $user->update($input);
+
+        return redirect('/admin/users');
+        
     }
 
     /**
