@@ -127,7 +127,7 @@ class AdminUsersController extends Controller
         $user->update($input);
 
         return redirect('/admin/users');
-        
+
     }
 
     /**
@@ -139,5 +139,7 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+        User::findOrFail($id)->delete();
+        return redirect('admin/users');
     }
 }
