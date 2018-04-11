@@ -10,6 +10,7 @@ use App\Http\Requests\PostsCreateRequest;
 use Auth;
 use App\Photo;
 use App\Category;
+use Illuminate\Support\Facades\Session;
 
 class AdminPostsController extends Controller
 {
@@ -136,5 +137,16 @@ class AdminPostsController extends Controller
     public function destroy($id)
     {
         //
+        $post = Post::findOrFail($id);
+
+        if($post->photo_id)
+            unlink(public_path() . $post->photo->file);
+
+        $post->delete();
+
+        Session::flash('deleted_post', 'The post has been deleted');
+
+        return redirect('/admin/posts');
+
     }
 }
