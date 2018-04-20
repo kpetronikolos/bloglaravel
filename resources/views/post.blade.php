@@ -29,27 +29,54 @@
 		{{session('comment_message')}}
 	@endif
 
-	<div class="well">
-		<h4>Leave a Comment: </h4>
 
-		{!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
+	@if (Auth::check())
+		{{-- expr --}}
+	
+		<div class="well">
+			<h4>Leave a Comment: </h4>
 
-			<input type="hidden" name="post_id" value="{{$post->id}}">
+			{!! Form::open(['method'=>'POST', 'action'=>'PostCommentsController@store']) !!}
 
-			<div class="form-group">
-				{!! Form::label('body', 'Body: ') !!}
-				{!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
-			</div>
+				<input type="hidden" name="post_id" value="{{$post->id}}">
 
-			<div class="form-group">
-				{!! Form::submit('Submit comment', ['class'=>'btn btn-primary']) !!}
-			</div>
+				<div class="form-group">
+					{!! Form::label('body', 'Body: ') !!}
+					{!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>3]) !!}
+				</div>
 
-		{!! Form::close() !!}
+				<div class="form-group">
+					{!! Form::submit('Submit comment', ['class'=>'btn btn-primary']) !!}
+				</div>
 
-	</div>
+			{!! Form::close() !!}
+
+		</div>
+
+	@endif
 
 	<hr>
+	@if (count($comments) > 0)
+		{{-- expr --}}
+		@foreach ($comments as $comment)
+			{{-- expr --}}
+		
+			<div class="media">
+				<a class="pull-left" href="#">
+					<img height="64" class="media-object" src="{{$comment->photo ? $comment->photo : 'http://placehold.it/400x400'}}" alt=""></img>
+				</a>
+				<div class="media-body">
+					<h4 class="media-heading">{{$comment->author}}
+						<small>{{$comment->created_at->diffForHumans()}}</small>
+					</h4>
+					<p>{{$comment->body}}</p>
+				</div>
+			</div>
+
+		@endforeach
+
+	@endif
+	
 
 @stop
 
