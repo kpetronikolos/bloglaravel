@@ -71,31 +71,52 @@
 					</h4>
 					<p>{{$comment->body}}</p>
 
-					<div class="media">
-						<a class="pull-left" href="#">
-							<img class="media-object" src="http://placehold.it/64x64" alt="">
-						</a>
-						<div class="media-body">
-							<h4 class="media-heading">Nested Bootstrap
-								<small>April 20, 2018</small>
-							</h4>
-							Cras sit amet libero. dkjwjkwjkdw wdjkdwkj dejkedjkde jdekjkedjdede jkjdwdw dwjkdjdede jkdjdd edjkdje
-							wddjwkwdj wdkww kdwwdj wdbwdkwdq wbwdwd
-						</div>
+					@if (count($comment->replies) > 0)
+						{{-- expr --}}					
 
-						{!! Form::open(['method'=>'Post', 'action'=>'CommentRepliesController@createReply']) !!}
-							<input type="hidden" name="comment_id" value="{{$comment->id}}">
+						@foreach ($comment->replies as $reply)
+							{{-- expr --}}
+						
+							
 
-							<div class="form-group">
-								{!! Form::label('body', 'Body: ') !!}
-								{!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>1]) !!}
+							<div id="nested-comment" class="media">
+								<a class="pull-left" href="#">
+									<img height="64" class="media-object" src="{{$reply->photo ? $reply->photo : 'http://placehold.it/64x64'}}" alt="">
+								</a>
+								<div class="media-body">
+									<h4 class="media-heading">{{$reply->author}}
+										<small>{{$reply->created_at->diffForHumans()}}</small>
+									</h4>
+									{{$reply->body}}
+								</div>
+
+								<div class="comment-reply-container">
+								
+									<button class="toggle-reply btn btn-primary pull-right">Reply</button>
+
+									<div class="comment-reply">
+
+										{!! Form::open(['method'=>'Post', 'action'=>'CommentRepliesController@createReply']) !!}
+											<div class="form-group">
+												<input type="hidden" name="comment_id" value="{{$comment->id}}">
+											
+												{!! Form::label('body', 'Body: ') !!}
+												{!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>1]) !!}
+											</div>
+											<div class="form-group">
+												{!! Form::submit('Submit', ['class'=>'btn btn-primary']) !!}
+											</div>
+										{!! Form::close() !!}
+
+									</div>
+
+								</div>
 							</div>
-							<div class="form-group">
-								{!! Form::submit('Submit', ['class'=>'btn btn-primary']) !!}
-							</div>
-						{!! Form::close() !!}
 
-					</div>
+						@endforeach
+
+					@endif
+
 				</div>
 			</div>
 
@@ -103,6 +124,16 @@
 
 	@endif
 	
+
+@stop
+
+@section('scripts')
+
+	<script>
+		$(".comment-reply-container .toggle-reply").click(function(){
+			$(this).next().slideToggle("slow");
+		});
+	</script>
 
 @stop
 
@@ -123,3 +154,4 @@
             </div>
 
 @stop
+
