@@ -63,13 +63,39 @@
 		
 			<div class="media">
 				<a class="pull-left" href="#">
-					<img height="64" class="media-object" src="{{$comment->photo ? $comment->photo : 'http://placehold.it/400x400'}}" alt=""></img>
+					<img height="64" class="media-object" src="{{$comment->photo ? $comment->photo : 'http://placehold.it/64x64'}}" alt=""></img>
 				</a>
 				<div class="media-body">
 					<h4 class="media-heading">{{$comment->author}}
 						<small>{{$comment->created_at->diffForHumans()}}</small>
 					</h4>
 					<p>{{$comment->body}}</p>
+
+					<div class="media">
+						<a class="pull-left" href="#">
+							<img class="media-object" src="http://placehold.it/64x64" alt="">
+						</a>
+						<div class="media-body">
+							<h4 class="media-heading">Nested Bootstrap
+								<small>April 20, 2018</small>
+							</h4>
+							Cras sit amet libero. dkjwjkwjkdw wdjkdwkj dejkedjkde jdekjkedjdede jkjdwdw dwjkdjdede jkdjdd edjkdje
+							wddjwkwdj wdkww kdwwdj wdbwdkwdq wbwdwd
+						</div>
+
+						{!! Form::open(['method'=>'Post', 'action'=>'CommentRepliesController@createReply']) !!}
+							<input type="hidden" name="comment_id" value="{{$comment->id}}">
+
+							<div class="form-group">
+								{!! Form::label('body', 'Body: ') !!}
+								{!! Form::textarea('body', null, ['class'=>'form-control', 'rows'=>1]) !!}
+							</div>
+							<div class="form-group">
+								{!! Form::submit('Submit', ['class'=>'btn btn-primary']) !!}
+							</div>
+						{!! Form::close() !!}
+
+					</div>
 				</div>
 			</div>
 
